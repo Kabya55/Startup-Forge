@@ -1,0 +1,13 @@
+@import "tailwindcss";
+@import "@heroui/styles";
+
+/* Custom animation for rotating border */
+@keyframes spin-border {
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.animate-spin-border {
+    animation: spin-border 4s linear infinite;
+}
