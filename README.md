@@ -3,7 +3,9 @@
 
 **Live Application:** [https://startup-forge-beige.vercel.app](https://startup-forge-beige.vercel.app)
 
-![StartupForge Homepage](./public/homepage.jpg)
+**Picture**
+<img width="1744" height="1211" alt="Screenshot_7" src="https://github.com/user-attachments/assets/aeac12e2-c7ff-491e-ae56-607a2ed49678" />
+
 
 StartupForge is a co-founder matching and startup launchpad platform designed to connect **Founders** looking for talent and **Collaborators** (developers, designers, marketers) looking for startup opportunities. It features a complete role-based access control system (RBAC), subscription package upgrades via Stripe, social authentication via Google, and a dedicated admin command center.
 
