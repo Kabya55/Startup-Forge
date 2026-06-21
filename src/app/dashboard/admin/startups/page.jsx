@@ -7,7 +7,8 @@ export const metadata = {
 };
 
 const AdminStartupsPage = async () => {
-  const startups = await getStartups();
+  const data = await getStartups();
+  const startups = Array.isArray(data) ? data : [];
 
   return (
     <div className="min-h-screen bg-[#0d0d0f] p-8 text-neutral-100">

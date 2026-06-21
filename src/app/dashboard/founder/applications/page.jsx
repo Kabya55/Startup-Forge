@@ -15,24 +15,18 @@ import { updateApplicationStatus } from "@/lib/actions/applications";
 import { toast } from "react-toastify";
 import { ArrowUpRight } from "lucide-react";
 
+import { useSession } from "@/lib/auth-client";
+
 export default function FounderApplicationsPage() {
+  const { data: session, isPending } = useSession();
   const [applications, setApplications] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const fetchApps = () => {
-    const getCookie = (name) => {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop().split(";").shift();
-    };
-    const token =
-      getCookie("better-auth.session_token") ||
-      getCookie("__Secure-better-auth.session_token");
-
+  const fetchApps = (token) => {
     fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/api/applications`,
       {
-        headers: token ? { Authorization: `Bearer ${token}` } : {},
+        headers: { Authorization: `Bearer ${token}` },
         credentials: "include",
       },
     )
@@ -51,8 +45,15 @@ export default function FounderApplicationsPage() {
   };
 
   useEffect(() => {
-    fetchApps();
-  }, []);
+    if (isPending) return;
+
+    if (!session?.session?.token) {
+      setIsLoading(false);
+      return;
+    }
+
+    fetchApps(session.session.token);
+  }, [session, isPending]);
 
   const handleStatusUpdate = async (id, newStatus) => {
     try {

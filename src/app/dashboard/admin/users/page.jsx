@@ -7,7 +7,8 @@ export const metadata = {
 };
 
 export default async function AdminUsersPage() {
-  const users = await getUsersList() || [];
+  const data = await getUsersList();
+  const users = Array.isArray(data) ? data : [];
 
   return (
     <div className="min-h-screen bg-zinc-950 p-8 text-zinc-200">

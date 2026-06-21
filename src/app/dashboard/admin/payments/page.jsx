@@ -1,26 +1,33 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useSession } from "@/lib/auth-client";
 import { Table, TableHeader, TableColumn, TableBody, TableRow, TableCell, Chip } from "@heroui/react";
 
 export default function AdminPaymentsPage() {
+  const { data: session, isPending } = useSession();
   const [payments, setPayments] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const getCookie = (name) => {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop().split(";").shift();
-    };
-    const token = getCookie("better-auth.session_token") || getCookie("__Secure-better-auth.session_token");
+    if (isPending) return;
+
+    if (!session?.session?.token) {
+      setIsLoading(false);
+      return;
+    }
+
+    const token = session.session.token;
 
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/payments`, {
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      headers: { Authorization: `Bearer ${token}` },
       credentials: "include",
     })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to load payments");
+      .then(async (res) => {
+        if (!res.ok) {
+          const errText = await res.text();
+          throw new Error(`Failed to load payments: ${res.status} ${errText}`);
+        }
         return res.json();
       })
       .then((data) => {
@@ -31,7 +38,7 @@ export default function AdminPaymentsPage() {
         console.error(err);
         setIsLoading(false);
       });
-  }, []);
+  }, [session, isPending]);
 
   const formatDate = (dateString) => {
     if (!dateString) return "N/A";

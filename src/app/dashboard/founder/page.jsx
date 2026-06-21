@@ -17,17 +17,12 @@ const FounderPage = () => {
   const [isLoadingStats, setIsLoadingStats] = useState(true);
 
   useEffect(() => {
-    if (!session?.user) return;
+    if (!session?.session?.token) return;
     
-    const getCookie = (name) => {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop().split(";").shift();
-    };
-    const token = getCookie("better-auth.session_token") || getCookie("__Secure-better-auth.session_token");
+    const token = session.session.token;
 
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/founder/stats`, {
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      headers: { Authorization: `Bearer ${token}` },
       credentials: "include"
     })
       .then((res) => {

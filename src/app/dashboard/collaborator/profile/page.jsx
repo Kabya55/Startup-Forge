@@ -25,17 +25,9 @@ export default function CollaboratorProfilePage() {
   const [isSaving, setIsSaving] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
 
-  const getCookie = (name) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(";").shift();
-  };
-
   const fetchUserProfile = async () => {
     try {
-      const token =
-        getCookie("better-auth.session_token") ||
-        getCookie("__Secure-better-auth.session_token");
+      const token = session?.session?.token;
 
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/users/profile`,
@@ -58,10 +50,12 @@ export default function CollaboratorProfilePage() {
   };
 
   useEffect(() => {
-    if (session?.user) {
+    if (session?.session?.token) {
       fetchUserProfile();
+    } else if (!isPending) {
+      setIsLoadingProfile(false);
     }
-  }, [session]);
+  }, [session, isPending]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -104,9 +98,7 @@ export default function CollaboratorProfilePage() {
       }
 
       // 2. Submit to backend
-      const token =
-        getCookie("better-auth.session_token") ||
-        getCookie("__Secure-better-auth.session_token");
+      const token = session?.session?.token;
 
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_API_URL}/api/users/profile`,

@@ -2,9 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { Users, Building, Briefcase, CreditCard } from "lucide-react";
+import { useSession } from "@/lib/auth-client";
 import { DashboardStats } from "@/components/dashboard/DashboardStats";
 
 export default function AdminDashboardHomePage() {
+  const { data: session, isPending } = useSession();
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalStartups: 0,
@@ -14,19 +16,24 @@ export default function AdminDashboardHomePage() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const getCookie = (name) => {
-      const value = `; ${document.cookie}`;
-      const parts = value.split(`; ${name}=`);
-      if (parts.length === 2) return parts.pop().split(";").shift();
-    };
-    const token = getCookie("better-auth.session_token") || getCookie("__Secure-better-auth.session_token");
+    if (isPending) return;
+
+    if (!session?.session?.token) {
+      setIsLoading(false);
+      return;
+    }
+
+    const token = session.session.token;
 
     fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/stats`, {
-      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      headers: { Authorization: `Bearer ${token}` },
       credentials: "include",
     })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to load admin stats");
+      .then(async (res) => {
+        if (!res.ok) {
+          const errText = await res.text();
+          throw new Error(`Failed to load admin stats: ${res.status} ${errText}`);
+        }
         return res.json();
       })
       .then((data) => {
@@ -37,7 +44,7 @@ export default function AdminDashboardHomePage() {
         console.error(err);
         setIsLoading(false);
       });
-  }, []);
+  }, [session, isPending]);
 
   if (isLoading) {
     return (
