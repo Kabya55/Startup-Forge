@@ -2,6 +2,7 @@ import React from "react";
 import { StatCard } from "./StatCard";
 
 export const DashboardStats = ({ statsData = [] }) => {
+  console.log(statsData);
   return (
     <div className="w-full max-w-7xl mx-auto p-4">
       {/* Responsive Grid layout */}

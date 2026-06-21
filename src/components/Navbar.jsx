@@ -104,11 +104,10 @@ export default function Navbar() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className={`text-sm transition-colors px-3 py-2 rounded-lg ${
-                        isActive(link.href)
+                      className={`text-sm transition-colors px-3 py-2 rounded-lg ${isActive(link.href)
                           ? "text-violet-400 bg-violet-500/10 font-semibold"
                           : "text-zinc-400 font-medium hover:text-white hover:bg-zinc-800/50"
-                      }`}
+                        }`}
                     >
                       {link.label}
                     </Link>
@@ -201,9 +200,8 @@ export default function Navbar() {
 
         {/* Mobile Nav Links Wrapper (Only shows navigation links now) */}
         <div
-          className={`overflow-hidden transition-all duration-300 md:hidden ${
-            isMenuOpen ? "max-h-[300px] opacity-100 py-4" : "max-h-0 opacity-0"
-          }`}
+          className={`overflow-hidden transition-all duration-300 md:hidden ${isMenuOpen ? "max-h-[300px] opacity-100 py-4" : "max-h-0 opacity-0"
+            }`}
         >
           <div className="rounded-2xl border border-zinc-800 bg-zinc-900/95 p-4 backdrop-blur-xl shadow-xl">
             <ul className="space-y-1">
@@ -212,11 +210,10 @@ export default function Navbar() {
                   <Link
                     href={link.href}
                     onClick={() => setIsMenuOpen(false)}
-                    className={`block rounded-lg px-3 py-2.5 text-sm transition-colors ${
-                      isActive(link.href)
+                    className={`block rounded-lg px-3 py-2.5 text-sm transition-colors ${isActive(link.href)
                         ? "bg-violet-500/10 text-violet-400 font-semibold"
                         : "text-zinc-300 hover:bg-zinc-800 hover:text-white"
-                    }`}
+                      }`}
                   >
                     {link.label}
                   </Link>
