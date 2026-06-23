@@ -13,7 +13,6 @@ import {
 } from "@heroui/react";
 import { updateApplicationStatus } from "@/lib/actions/applications";
 import { toast } from "react-toastify";
-import { ArrowUpRight } from "lucide-react";
 
 import { useSession } from "@/lib/auth-client";
 
@@ -109,9 +108,6 @@ export default function FounderApplicationsPage() {
                 Opportunity Role
               </th>
               <th className="py-4 px-4 sm:px-6 bg-zinc-800/50 text-zinc-300 font-bold">
-                Portfolio Link
-              </th>
-              <th className="py-4 px-4 sm:px-6 bg-zinc-800/50 text-zinc-300 font-bold">
                 Motivation Message
               </th>
               <th className="py-4 px-4 sm:px-6 bg-zinc-800/50 text-zinc-300 font-bold">
@@ -126,7 +122,7 @@ export default function FounderApplicationsPage() {
             {applications.length === 0 ? (
               <tr>
                 <td
-                  colSpan="6"
+                  colSpan="5"
                   className="py-8 px-4 text-center text-zinc-500 whitespace-normal"
                 >
                   No applications received yet.
@@ -145,16 +141,6 @@ export default function FounderApplicationsPage() {
                     </td>
                     <td className="py-4 px-4 sm:px-6 text-zinc-200">
                       {app.role_title}
-                    </td>
-                    <td className="py-4 px-4 sm:px-6">
-                      <a
-                        href={app.portfolio_link}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="text-violet-400 hover:text-violet-300 underline inline-flex items-center gap-1 font-medium"
-                      >
-                        View Portfolio <ArrowUpRight className="w-3.5 h-3.5" />
-                      </a>
                     </td>
                     <td className="py-4 px-4 sm:px-6">
                       <p
